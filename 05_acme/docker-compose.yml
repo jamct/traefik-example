@@ -1,0 +1,11 @@
+services:
+  traefik:
+    image: traefik:v2.0
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/traefik/traefik.toml:/traefik.toml
+      - ./data/traefik/acme.json:/acme.json
