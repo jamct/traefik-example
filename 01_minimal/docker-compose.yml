@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  traefik:
+    image: traefik:v2.0
+    command: --providers.docker
+    ports:
+      - "80:80"
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock:rw
+  #    - ./traefik.toml:/etc/traefik/traefik.toml
+  web1:
+    image: nginx:alpine
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`web1.localhost`)"
+      
+
+      
+
