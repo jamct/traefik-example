@@ -15,3 +15,5 @@ services:
     image: containous/whoami
     labels:
       - traefik.http.routers.web2.rule=Host(`web2.localhost`) || ( Host(`localhost`) && PathPrefix(`/web2`) )
+      - traefik.http.middlewares.demo-whitelist.ipwhitelist.sourcerange=127.0.0.1/32
+      - traefik.http.routers.web2.middlewares=demo-whitelist@docker

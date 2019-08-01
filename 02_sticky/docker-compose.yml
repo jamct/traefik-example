@@ -15,3 +15,4 @@ services:
     image: containous/whoami
     labels:
       - traefik.http.routers.web2.rule=Host(`web2.localhost`) || ( Host(`localhost`) && PathPrefix(`/web2`) )
+      - traefik.http.services.web2.loadBalancer.stickiness
