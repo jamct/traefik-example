@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  traefik:
+    image: traefik:v2.0
+    command: --providers.docker
+    restart: always
+    ports:
+     - 80:80
+     - 443:443
+     - 8883:8883
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock:rw
+     - ./static.yml:/etc/traefik/traefik.yml
+     - ./dynamic.yml:/etc/traefik/dynamic/dynamic.yml
+     - ./acme.json:/etc/traefik/acme/acme.json
+
+  mqtt:
+    image: "eclipse-mosquitto"
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.example.org`)"
+      - "traefik.tcp.routers.mqtt.entrypoints=mqtt"
+      - "traefik.tcp.routers.mqtt.tls=true"
+      - "traefik.tcp.routers.mqtt.service=mqtt-svc"
+      - "traefik.tcp.services.mqtt-svc.loadbalancer.server.port=1883"
+      - "traefik.tcp.routers.mqtt.tls.certResolver=default"   
