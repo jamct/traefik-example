@@ -1,4 +1,4 @@
-# Traefik 2.0 and Let's Encrypt
+# Traefik 2.0 for TCP services and TLS certificates from Let's Encrypt
 
 Run this compose file on a machine with a public IP and a DNS A-record.
 
