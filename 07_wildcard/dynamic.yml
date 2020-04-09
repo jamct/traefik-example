@@ -1,0 +1,16 @@
+http:
+  routers:
+    https-redirect:
+      rule: 'HostRegexp(`{any:.*}`)'
+      middlewares:
+       - https-redirect
+      service: redirect-all
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+  services:
+    redirect-all:
+      loadBalancer:
+        servers:
+         - url: ""

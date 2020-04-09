@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  traefik:
+    image: traefik:v2.2
+    command: --providers.docker
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - ./static.yml:/etc/traefik/traefik.yml
+      - ./dynamic.yml:/etc/traefik/dynamic/dynamic.yml
+      - ./acme.json:/etc/traefik/acme/acme.json
+    environment:
+      - CF_API_EMAIL=admin@example.org
+      - CF_DNS_API_TOKEN=MEINTOKENMEINTOKEIN
+      - CF_ZONE_API_TOKEN=MEINTOKENMEINTOKEIN
+
+  web2:
+    image: containous/whoami
+    labels:
+      - "traefik.http.services.website.loadbalancer.server.port=80"
+      - "traefik.http.routers.website.rule=Host(`example.com`) || Host(`www.example.com`)"
+      - "traefik.http.routers.website.tls=true"
+      - "traefik.http.routers.website.tls.certResolver=default"
+      - "traefik.http.routers.website.tls.domains[0].main=example.com"
+      - "traefik.http.routers.website.tls.domains[0].sans=*.example.com"

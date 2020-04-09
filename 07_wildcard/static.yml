@@ -1,0 +1,25 @@
+entryPoints:
+  web:
+    address: ":80"
+  web-secure:
+    address: ":443"
+
+providers:
+  docker:
+    watch: true
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+    filename: dynamic.yml
+
+certificatesResolvers:
+  default:
+    acme:
+      email: admin@example.org
+      storage: /etc/traefik/acme/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+
